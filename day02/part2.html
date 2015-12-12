@@ -1,0 +1,77 @@
+<!--Program to work out ribbons and ripples father crimbo needs this year.
+    File reading code adapted from juanpastas on Stack Overflow.
+    Rest by Jake Huxell 2015 for Advent of code.-->
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8"> 
+<title>Father Crimbo Ties It Up</title>
+</head>
+<body>
+  <input type="file" name = "paperList" id="paperList">
+  <script>
+  // Function to work out the perimeter of a rectangle
+  function perimeter(side1, side2)
+  {
+    return side1 * 2 + side2 * 2;
+  } // perimeter function
+
+  // Function to work out the ribbon length to wrap around the parcel 
+  function ribbonLength(dimensions)
+  {
+    var perimeters = [(perimeter(dimensions[0], dimensions[1])), 
+                      (perimeter(dimensions[0], dimensions[2])), 
+                      (perimeter(dimensions[2], dimensions[1]))];
+
+    var shortest = perimeters[0];
+    for (var index = 1; index < 3; index++)
+    {
+      if (perimeters[index] < shortest)
+        shortest = perimeters[index];
+    } // for
+    return shortest;
+  } // ribbonLength function
+
+  // Function to work out how much ribbon is needed for the bow
+  function bowLength(dimensions)
+  {
+    return dimensions[0] * dimensions[1] * dimensions[2];
+  } // bowLength
+
+  // Function to calculate the ribbon needed for a parcel
+  function ribbonNeeded(dimensions)
+  {
+    var sides = [Number(dimensions[0]), Number(dimensions[1]), 
+                 Number(dimensions[2]),];
+
+    var shortestRibbon = ribbonLength(sides);  
+    var bow = bowLength(sides);
+    console.log(bow);
+    console.log(shortestRibbon);
+    
+    return bow + shortestRibbon;
+  } // paperNeeded function
+  
+  // Rest involves opening a file and calculating total
+  document.getElementById('paperList').onchange = function(){
+    var file = this.files[0];
+    var reader = new FileReader();
+    reader.onload = function(progressEvent){
+      var lines = this.result.split("\n");
+      var total = 0;
+      for (var line = 0; line < lines.length - 1; line++)
+      { 
+        var nums = lines[line].split("x");
+        total += ribbonNeeded(nums);
+      } // for
+      console.log(total);
+    };
+  reader.readAsText(file);
+  };
+  </script>
+
+  <noscript>You can't see it; your javascript is kaput!</noscript>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!--Program to work out surface area of wrapping paper father crimbo needs this year.
+    File reading code adapted from juanpastas on Stack Overflow.
+    Rest by Jake Huxell 2015 for Advent of code.-->
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8"> 
+<title>Father Crimbo Wraps Up Tonight</title>
+</head>
+<body>
+  <input type="file" name = "paperList" id="paperList">
+  <script>
+  // Function to work out the surface area of a side 
+  function surfaceArea(side1, side2)
+  {
+    return side1 * side2 * 2;
+  } // surfaceArea function
+
+  // Function to calculate the paper needed for a parcel
+  function paperNeeded(dimensions)
+  {
+    var paper = 0;
+    var smallestArea = 999999999;
+    sAreas = ((surfaceArea(dimensions[0], dimensions[1])), 
+              (surfaceArea(dimensions[0], dimensions[2])),
+              (surfaceArea(dimensions[1], dimensions[2])));
+
+    for (var side = 0; side < 3; side++)
+    {
+      if (sAreas[side] < smallestArea)
+        smallestArea = sAreas[side];
+      paper += sAreas[side];
+    } // for
+    return paper + smallestArea;
+  } // paperNeeded function
+  
+  // Rest involves opening a file and calculating total
+  document.getElementById('paperList').onchange = function(){
+    var file = this.files[0];
+    var reader = new FileReader();
+    reader.onload = function(progressEvent){
+      var lines = this.result.split("\n");
+      var total = 0;
+      for (var line = 0; line < lines.length; line++)
+      {
+        var nums = lines[line].split("x");
+        console.log(nums[0]);
+        //var convertedNums = (0, 0, 0);
+        //for (var num = 0; num < 3; num++)
+          //convertedNums[num] = parseInt(nums[num]);
+        total += paperNeeded(nums);
+      } // for
+      console.log(total);
+    };
+  reader.readAsText(file);
+  };
+  </script>
+
+  <noscript>You can't see it; your javascript is kaput!</noscript>
+
+</body>
+</html>
