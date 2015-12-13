@@ -3,12 +3,14 @@ Directory where I save Christmas. Languages used are selected randomly by the sp
 
 ## Language Tally So Far...
 
+  - **JavaScript** ||
   - **C** |
   - **Java** |
-  - **JavaScript** |
+
 
 ## Completed Days And The Languages Uttered 
 
   - *Day 1*, Worst Elf Cipher since Rudolph morse code. **C**
   - *Day 2*, Sweatshop profit margin pounding. **JavaScript** 
   - *Day 3*, Santa Plays Minecraft With Exclusive Giveaways!11g!. **Java**
+  - *Day 4*, The US requests to deport Santa from the North Pole; Trial still pending. **JavaScript**

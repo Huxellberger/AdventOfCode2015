@@ -1,0 +1,43 @@
+<!--Program to find the first md5 hashmapping with 5 leading zeroes
+    I did not make the MD5 in Javascript; I'm not insane. 
+    Rest by Jake Huxell 2015 for Advent of code.-->
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8"> 
+<script src = "MD5.js">
+</script>
+<title>Father Crimbo Robs The Internet</title>
+</head>
+<body>
+  <script>
+  // Function to check if result of md5 has at least 5 leading zeroes
+  function checkMD5(value)
+  {
+    var leadingZeroes = true;
+    for (var index = 0; index < 5; index++)
+    {
+      if (value[index] != "0")
+        leadingZeroes = false;
+    } // for    
+    return leadingZeroes;
+  } // checkMD5 function
+  
+  var num = 0;
+  var hash = "";
+
+  var foundSolution = false;
+  while (!foundSolution)
+  {
+    hash = "iwrupvqb";
+    num++;
+    hash += num;
+    hash = MD5(hash);
+    foundSolution = checkMD5(hash);
+  } // while
+  console.log(num);
+  </script>
+  <noscript>You can't see it; your javascript is kaput!</noscript>
+</body>
+</html>
