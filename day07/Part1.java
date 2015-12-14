@@ -1,4 +1,6 @@
 // Program to set up the circuit and send a current through it
+// *TODO: FINISH THE PROCESS INSTRUCTION METHOD*, DON'T FORGET CHECKING IF 
+// WIRE ALREADY EXISTS 
 
 import java.util.*;
 import java.io.*;
