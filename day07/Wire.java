@@ -3,11 +3,11 @@ public class Wire // No this isn't verilog!!
 {
   // Variables to rep data bus and wire's unique name
   // It's an unsigned value so we have to create our own data type
-  private boolean[15] bus;
-  private string name;
+  private boolean[] bus = new boolean[15];
+  private String name;
 
   // Wire constructor
-  public Wire(string chosenName)
+  public Wire(String chosenName)
   {
     for (int i =0; i < 16; i++)
       bus[i] = false;
@@ -22,7 +22,7 @@ public class Wire // No this isn't verilog!!
   } // getBus method
 
   // Method to get unsigned value repped by bus in binary
-  public int getBusBinary()
+  public boolean[] getBusBinary()
   {
     return bus;
   } // getBusBinary method
@@ -30,7 +30,7 @@ public class Wire // No this isn't verilog!!
   // Method to change the value of the bus
   public void changeBus(int newValue)
   {
-    bus = BinaryConversion.dToB(newValue);
+    bus = BinaryConversion.dToB(newValue, 16);
   } // changeBus method
 
   // Additional method that takes bus as arg
@@ -40,15 +40,15 @@ public class Wire // No this isn't verilog!!
   } // changeBus method
 
   // Method to get the name of the wire
-  public string getName()
+  public String getName()
   {
     return name;
   } // getName method
 
   // Method that prints out a wire
-  public string toString()
+  public String toString()
   {
-    int num = bToD(bus);
-    System.out.println(name + ": " + num + "\n"); 
+    int num = BinaryConversion.bToD(bus);
+    return name + ": " + num + "\n"; 
   } // toString function
 } // Wire Class

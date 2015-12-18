@@ -42,12 +42,20 @@ public class Gate
   } // Gate constructor
 
   // Gate constructor for 1 input, 1 out no literal
-  public Gate(GateType gate, Wire chosenWire1, Wire chosenOut)
+  public Gate(GateType chosenGate, Wire chosenWire1, Wire chosenOut)
   {
     gate = chosenGate;
     wireIn1 = chosenWire1;
     wireOut = chosenOut;
   } // Gate constructor 
+
+  // Gate constructor for 1 literal and one out
+  public Gate(GateType chosenGate, int chosenLiteral, Wire chosenOut)
+  {
+    gate = chosenGate;
+    literalValue = chosenLiteral;
+    wireOut = chosenOut;
+  } // Gate constructor
 
   // Function to perform an operation on a wire's inputs
   // Will use a switch statement to distinguish between them
@@ -74,11 +82,12 @@ public class Gate
   private void and()
   {
     // Work out if hooked to literal or not
-    boolean[15] newOut;
+    boolean[] newOut = new boolean[15];
+    boolean[] literalWire = new boolean[15];
     if (literalValue >= 0)
-      boolean[15] literalWire = BinaryConversion.dToB(literalValue);
+      literalWire = BinaryConversion.dToB(literalValue, 16);
     else 
-      boolean[15] literalWire = wireIn2.getBusBinary();
+      literalWire = wireIn2.getBusBinary();
     for (int i = 0; i < 16; i++)
     {
       if(literalWire[i] == true && (wireIn1.getBusBinary())[i] == true)
@@ -92,11 +101,12 @@ public class Gate
   // bitwise or operation
   private void or()
   {
-    boolean[15] newOut;
+    boolean[] newOut = new boolean[15];
+    boolean[] literalWire = new boolean[15];
     if (literalValue >= 0)
-      boolean[15] literalWire = BinaryConversion.dToB(literalValue);
+      literalWire = BinaryConversion.dToB(literalValue, 16);
     else 
-      boolean[15] literalWire = wireIn2.getBusBinary();
+      literalWire = wireIn2.getBusBinary();
     for (int i = 0; i < 16; i++)
     {
       if(literalWire[i] == false && (wireIn1.getBusBinary())[i] == false)
@@ -111,14 +121,14 @@ public class Gate
   private void rshift()
   {
     int iterations = literalValue;
-    boolean[15] newOut = wireIn1.getBusBinary;
+    boolean[] newOut = wireIn1.getBusBinary();
     while (iterations != 0)
     {
       for (int i = 0; i < 15; i++)
       {
         newOut[i+1] = newOut[i];
       } // for
-      newOut[0] = 0;
+      newOut[0] = false;
       iterations--;
     } // while
     wireOut.changeBus(newOut);
@@ -128,14 +138,14 @@ public class Gate
   private void lshift()
   {
     int iterations = literalValue;
-    boolean[15] newOut = wireIn1.getBusBinary;
+    boolean[] newOut = wireIn1.getBusBinary();
     while (iterations != 0)
     {
       for (int i = 15; i > 1; i++)
       {
         newOut[i-1] = newOut[i];
       } // for
-      newOut[15] = 0;
+      newOut[15] = false;
       iterations--;
     } // while
     wireOut.changeBus(newOut);
@@ -144,7 +154,7 @@ public class Gate
   // not operation
   private void not()
   {
-    boolean[15] newOut = wireIn1.getBusBinary;
+    boolean[] newOut = wireIn1.getBusBinary();
     for(int i = 0; i < 15; i++)
     {
       if (newOut[i] == true)

@@ -17,7 +17,7 @@ public class BinaryConversion
   public static boolean[] dToB(int decimalValue, int bitLength)
   {
     int index = 0;
-    boolean[bitLength] binary;
+    boolean[] binary = new boolean[bitLength];
     for (index = 0; index < bitLength; index++)
       binary[bitLength] = false;
     index = 0;
@@ -26,7 +26,7 @@ public class BinaryConversion
     {
       newBit = decimalValue%2;
       if (newBit == 1)
-        binary[index] = newBit;
+        binary[index] = true;
       decimalValue /= 2;
       index++;
     } // while
