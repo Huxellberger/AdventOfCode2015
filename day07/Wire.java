@@ -3,7 +3,7 @@ public class Wire // No this isn't verilog!!
 {
   // Variables to rep data bus and wire's unique name
   // It's an unsigned value so we have to create our own data type
-  private boolean[] bus = new boolean[15];
+  private boolean[] bus = new boolean[16];
   private String name;
 
   // Wire constructor
@@ -30,6 +30,7 @@ public class Wire // No this isn't verilog!!
   // Method to change the value of the bus
   public void changeBus(int newValue)
   {
+    System.out.println("Converting to binary now");
     bus = BinaryConversion.dToB(newValue, 16);
   } // changeBus method
 

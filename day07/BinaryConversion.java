@@ -19,8 +19,9 @@ public class BinaryConversion
     int index = 0;
     boolean[] binary = new boolean[bitLength];
     for (index = 0; index < bitLength; index++)
-      binary[bitLength] = false;
+      binary[index] = false;
     index = 0;
+    System.out.println(index);
     int newBit;
     while (decimalValue > 0)
     {
@@ -29,6 +30,7 @@ public class BinaryConversion
         binary[index] = true;
       decimalValue /= 2;
       index++;
+      System.out.println(index);
     } // while
     return binary;
   } // dToB function 

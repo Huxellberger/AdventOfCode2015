@@ -1,9 +1,9 @@
 // Program to set up the circuit and send a current through it
-// *TODO: FINISH THE PROCESS INSTRUCTION METHOD*, DON'T FORGET CHECKING IF 
-// WIRE ALREADY EXISTS 
 
 import java.util.*;
 import java.io.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Part1
 {
@@ -11,7 +11,7 @@ public class Part1
   public static final int GATE_NUM = 338;
   static int currentGateNo = 0;
   // ArrayList to hold all the gates
-  static Gate[] gates = new Gate[GATE_NUM];
+  static Circuit circuit = new Circuit(GATE_NUM);
   // Hashmap to hold all the wires
   static HashMap <String, Wire> wires = new HashMap();
 
@@ -21,6 +21,7 @@ public class Part1
   // Function to check if wire already exists in the hashmap
   public static boolean checkWireMatch(String wireName)
   {
+    System.out.println("\nChecking if wire matches");
     if(wires.containsKey(wireName))
       return true;
     else
@@ -39,6 +40,7 @@ public class Part1
   public static int extractInt(String extractee)
   {
     Matcher intChecker = findInt.matcher(extractee);
+    System.out.println(extractee);
     if (intChecker.find())
       return Integer.parseInt(extractee);
     else
@@ -50,10 +52,10 @@ public class Part1
   public static void processInstruction(String[] instruction)
   {
     // Declare everything needed by the process
-    Wire wireIn1;
-    Wire wireIn2;
-    Wire wireOut;
-    Gate newGate;
+    Wire wireIn1 = null;
+    Wire wireIn2 = null;
+    Wire wireOut = null;
+    Gate newGate = null;
 
     int currentValue = 0;
     int input1 = -1;
@@ -68,14 +70,19 @@ public class Part1
         wireIn1 = (Wire)wires.get(instruction[0]);
       else
       {
+        System.out.println("Creating new wire");
+        System.out.println(instruction[0]);
         wireIn1 = new Wire(instruction[0]);
+        System.out.println("New wire created, inserting now");
         wires.put(instruction[0], wireIn1);
+        System.out.println("Wire Inserted");
       } // else  
     } // else
 
     // Next steps based off instruction length
     if (instruction.length == 5)
     {
+      System.out.println("Instruction is length 5");
       if ((currentValue = extractInt(instruction[2])) != -1)
         input2 = currentValue;
       else
@@ -95,7 +102,7 @@ public class Part1
         wireOut = new Wire(instruction[4]);
         wires.put(instruction[4], wireOut);
       } // else  
-      if (instruction[1] == "AND")
+      if (instruction[1].equals("AND"))
       {
         if (input1 != -1 && input2 != -1)
           newGate = new Gate(Gate.GateType.G_AND, wireIn1, wireIn2, wireOut);
@@ -104,7 +111,7 @@ public class Part1
         else if (input1 == -1 && input2 != -1)
           newGate = new Gate(Gate.GateType.G_AND, wireIn1, input2, wireOut);
       } // if
-      else if (instruction[1] == "OR")
+      else if (instruction[1].equals("OR"))
       {
         if (input1 != -1 && input2 != -1)
           newGate = new Gate(Gate.GateType.G_OR, wireIn1, wireIn2, wireOut);
@@ -113,7 +120,7 @@ public class Part1
         else if (input1 == -1 && input2 != -1)
           newGate = new Gate(Gate.GateType.G_OR, wireIn1, input2, wireOut);
       } // else if 
-      else if (instruction[1] == "RSHIFT")
+      else if (instruction[1].equals("RSHIFT"))
       {
         if (input1 != -1 && input2 != -1)
           newGate = new Gate(Gate.GateType.G_RSHIFT, wireIn1, wireIn2, wireOut);
@@ -122,7 +129,7 @@ public class Part1
         else if (input1 == -1 && input2 != -1)
           newGate = new Gate(Gate.GateType.G_RSHIFT, wireIn1, input2, wireOut);
       } // else if
-      else if (instruction[1] == "LSHIFT")
+      else if (instruction[1].equals("LSHIFT"))
       {
         if (input1 != -1 && input2 != -1)
           newGate = new Gate(Gate.GateType.G_LSHIFT, wireIn1, wireIn2, wireOut);
@@ -133,8 +140,7 @@ public class Part1
       } // else if
       else 
         System.out.println("Invalid instruction.");
-      gates[currentGateNo] = newGate;
-      currentGateNo++;
+      circuit.addGate(newGate);
     } // if
     else if (instruction.length == 4)
     {
@@ -148,11 +154,11 @@ public class Part1
       else
         wireIn1 = new Wire(instruction[3]);
       newGate = new Gate(Gate.GateType.G_NOT, wireIn1, wireOut);
-      gates[currentGateNo] = newGate;
-      currentGateNo++;
+      circuit.addGate(newGate);
     } // else if
     else if (instruction.length == 3)
     { 
+      System.out.println("Length 3 instruction sighted");
       if((currentValue = extractInt(instruction[2])) != -1)
         input2 = currentValue;
       else 
@@ -165,13 +171,18 @@ public class Part1
           wires.put(instruction[2], wireOut);
         } // else  
       } // else
+      System.out.println("configuring wires");
       if (input1 != -1)
         wireOut.changeBus(input1);
       else
-        wireOut.changeBus(wireIn1.getBusDecimal());
+      {
+        System.out.println("Attaching output to input");
+        wireOut.changeBus(wireIn1.getBusBinary());
+      } // else
     } // else if
     else
       System.out.println("Invalid instruction length.");
+    System.out.println("\n" + wireIn1 + " " + wireIn2 + " " + wireOut);
   } // processInstruction method
 
   // Main function
@@ -183,21 +194,27 @@ public class Part1
       File file = new File(args[0]);
       if (!file.exists())
       {
-        System.out.println("\nFile not valid you elf feeler.\n");
+        System.out.println("\nFile not valid you elf mangler.\n");
         return;
       } // if
 
       FileInputStream fis = new FileInputStream(file);
       BufferedReader br = new BufferedReader(new InputStreamReader(fis));
       String line;
-      while (line = br.readLine() != null)
+      int instructionIndex = 0;
+      while ((line = br.readLine()) != null)
       {
+        System.out.println(instructionIndex);
         String[] instruction =  line.split(" ");
         processInstruction(instruction);
+        instructionIndex++;
       } // while
       // Turn on the circuit
       for (int i = 0; i <= currentGateNo; i++)
-        gates[i].turnOn();
+      {
+        System.out.println("Printing gate " + i);
+        circuit.getGate(i).turnOn();
+      } // for
       Wire wireA = getChosenWire("a");
       System.out.println("\n" + wireA.getBusDecimal() + "\n");
     } // try block

@@ -21,6 +21,16 @@ public class Gate
   int literalValue = -1;
   GateType gate;
 
+  // Clone gate constructor
+  public Gate(Gate anotherGate)
+  {
+    this.wireIn1 = anotherGate.wireIn1;
+    this.wireIn2 = anotherGate.wireIn2;
+    this.wireOut = anotherGate.wireOut;
+    this.literalValue = anotherGate.literalValue;
+    this.gate = anotherGate.gate;
+  } // Gate constructor 
+
   // Gate constructor method for two inputs
   public Gate(GateType chosenGate, Wire chosenWire1, Wire chosenWire2, 
              Wire chosenOut)
@@ -61,6 +71,7 @@ public class Gate
   // Will use a switch statement to distinguish between them
   public void turnOn()
   {
+    System.out.println("Switching gate on");
     switch(gate)
     {
       case G_AND:  and();
@@ -82,8 +93,8 @@ public class Gate
   private void and()
   {
     // Work out if hooked to literal or not
-    boolean[] newOut = new boolean[15];
-    boolean[] literalWire = new boolean[15];
+    boolean[] newOut = new boolean[16];
+    boolean[] literalWire = new boolean[16];
     if (literalValue >= 0)
       literalWire = BinaryConversion.dToB(literalValue, 16);
     else 
@@ -101,8 +112,8 @@ public class Gate
   // bitwise or operation
   private void or()
   {
-    boolean[] newOut = new boolean[15];
-    boolean[] literalWire = new boolean[15];
+    boolean[] newOut = new boolean[16];
+    boolean[] literalWire = new boolean[16];
     if (literalValue >= 0)
       literalWire = BinaryConversion.dToB(literalValue, 16);
     else 
@@ -141,7 +152,7 @@ public class Gate
     boolean[] newOut = wireIn1.getBusBinary();
     while (iterations != 0)
     {
-      for (int i = 15; i > 1; i++)
+      for (int i = 15; i > 1; i--)
       {
         newOut[i-1] = newOut[i];
       } // for
@@ -155,7 +166,7 @@ public class Gate
   private void not()
   {
     boolean[] newOut = wireIn1.getBusBinary();
-    for(int i = 0; i < 15; i++)
+    for(int i = 0; i < 16; i++)
     {
       if (newOut[i] == true)
         newOut[i] = false;
@@ -164,5 +175,12 @@ public class Gate
     } // for
     wireOut.changeBus(newOut);
   } // not method
+
+  // Method to print a gate as its wires
+  // Used only for debugging purposes 
+  public String toString()
+  {
+    return wireIn1 + " " + wireIn2 + " " + wireOut + "\n";
+  } // toString method
   
 } // Gate class
