@@ -8,7 +8,8 @@ public class Gate
     G_OR,
     G_RSHIFT,
     G_LSHIFT,
-    G_NOT
+    G_NOT,
+    G_ROUTE
   } // GateType enum
 
   // Variables to represent the wire connectors, wire output 
@@ -83,6 +84,8 @@ public class Gate
       case G_LSHIFT:  lshift();
                       break;
       case G_NOT:     not();
+                      break;
+      case G_ROUTE:   route();
                       break;
       default:  System.out.println("\nInvalid gate switched on..\n");
     } // switch
@@ -175,6 +178,15 @@ public class Gate
     } // for
     wireOut.changeBus(newOut);
   } // not method
+
+  // route operation that connects two wires 
+  private void route()
+  {
+    if (literalValue != -1)
+      wireOut.changeBus(literalValue);
+    else
+      wireOut.changeBus(wireIn1.getBusBinary());
+  } // route method
 
   // Method to print a gate as its wires
   // Used only for debugging purposes 

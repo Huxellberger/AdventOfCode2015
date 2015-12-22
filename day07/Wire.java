@@ -37,7 +37,10 @@ public class Wire // No this isn't verilog!!
   // Additional method that takes bus as arg
   public void changeBus(boolean[] newValue)
   {
-    bus = newValue;
+    for (int i = 0; i < bus.length; i++)
+    {
+      bus[i] = newValue[i];
+    } // for
   } // changeBus method
 
   // Method to get the name of the wire
@@ -50,6 +53,6 @@ public class Wire // No this isn't verilog!!
   public String toString()
   {
     int num = BinaryConversion.bToD(bus);
-    return name + ": " + num + "\n"; 
+    return name + ": " + num; 
   } // toString function
 } // Wire Class
