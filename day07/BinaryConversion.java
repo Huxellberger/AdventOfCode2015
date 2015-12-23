@@ -8,10 +8,7 @@ public class BinaryConversion
     for (int i = 0; i < binaryValue.length; i++)
     {
       if (binaryValue[i] == true)
-      {
-        System.out.println("Value " + i + " is true");
         decimal += Math.pow(2, i);
-      } // if
     } // for
     System.out.println(decimal);
     return decimal;

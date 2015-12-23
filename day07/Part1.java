@@ -1,5 +1,5 @@
 // Program to set up the circuit and send a current through it
-//TODO get new G_ROUTE  gate working correctly
+//TODO FIX TURNING GATES ON
 
 import java.util.*;
 import java.io.*;
@@ -201,6 +201,16 @@ public class Part1
       } // while
       // Turn on the circuit
       for (int i = 0; i < GATE_NUM; i++)
+      {
+        if(circuit.getGate(i) != null)
+        {
+          System.out.println("Printing gate " + i);
+          System.out.println(circuit.getGate(i));
+          circuit.getGate(i).turnOn();
+          System.out.println(circuit.getGate(i));
+        } // if
+      } // for
+     for (int i = 0; i < GATE_NUM; i++)
       {
         if(circuit.getGate(i) != null)
         {

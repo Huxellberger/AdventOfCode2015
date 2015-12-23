@@ -101,7 +101,10 @@ public class Gate
     if (literalValue >= 0)
       literalWire = BinaryConversion.dToB(literalValue, 16);
     else 
-      literalWire = wireIn2.getBusBinary();
+    { 
+      for(int i = 0; i < 16; i++)      
+        literalWire[i] = wireIn2.getBusBinary()[i];
+    } // else
     for (int i = 0; i < 16; i++)
     {
       if(literalWire[i] == true && (wireIn1.getBusBinary())[i] == true)
@@ -119,8 +122,11 @@ public class Gate
     boolean[] literalWire = new boolean[16];
     if (literalValue >= 0)
       literalWire = BinaryConversion.dToB(literalValue, 16);
-    else 
-      literalWire = wireIn2.getBusBinary();
+    else
+    { 
+      for(int i = 0; i < 16; i++)      
+        literalWire[i] = wireIn2.getBusBinary()[i];
+    } // else
     for (int i = 0; i < 16; i++)
     {
       if(literalWire[i] == false && (wireIn1.getBusBinary())[i] == false)
@@ -135,14 +141,24 @@ public class Gate
   private void rshift()
   {
     int iterations = literalValue;
-    boolean[] newOut = wireIn1.getBusBinary();
+    boolean[] newOut = new boolean[16];
+    for(int i = 0; i < 16; i++)
+      newOut[i] = wireIn1.getBusBinary()[i];
+    boolean[] workingOut = new boolean[16];
+    for(int i = 0; i < 16; i++)
+      workingOut[i] = wireIn1.getBusBinary()[i];
     while (iterations != 0)
     {
-      for (int i = 0; i < 15; i++)
+      for (int i = 15; i > 0; i--)
       {
-        newOut[i+1] = newOut[i];
+        if(newOut[i] == true)
+          workingOut[i-1] = true;
+        else
+          workingOut[i-1] = false;
       } // for
-      newOut[0] = false;
+      for (int i = 0; i < 16; i++)
+        newOut[i] = workingOut[i];
+      newOut[15] = false;
       iterations--;
     } // while
     wireOut.changeBus(newOut);
@@ -152,14 +168,24 @@ public class Gate
   private void lshift()
   {
     int iterations = literalValue;
-    boolean[] newOut = wireIn1.getBusBinary();
+    boolean[] newOut = new boolean[16];
+    for(int i = 0; i < 16; i++)
+      newOut[i] = wireIn1.getBusBinary()[i];
+    boolean[] workingOut = new boolean[16];
+    for(int i = 0; i < 16; i++)
+      workingOut[i] = wireIn1.getBusBinary()[i];
     while (iterations != 0)
     {
-      for (int i = 15; i > 1; i--)
+      for (int i = 0; i < 15; i++)
       {
-        newOut[i-1] = newOut[i];
+        if(newOut[i] == true)
+          workingOut[i+1] = true;
+        else
+          workingOut[i+1] = false;
       } // for
-      newOut[15] = false;
+      for (int i = 0; i < 16; i++)
+        newOut[i] = workingOut[i];
+      newOut[0] = false;
       iterations--;
     } // while
     wireOut.changeBus(newOut);
@@ -168,7 +194,9 @@ public class Gate
   // not operation
   private void not()
   {
-    boolean[] newOut = wireIn1.getBusBinary();
+    boolean[] newOut = new boolean[16];
+    for(int i = 0; i < 16; i++)
+      newOut[i] = wireIn1.getBusBinary()[i];
     for(int i = 0; i < 16; i++)
     {
       if (newOut[i] == true)
@@ -192,7 +220,7 @@ public class Gate
   // Used only for debugging purposes 
   public String toString()
   {
-    return wireIn1 + " " + wireIn2 + " " + wireOut + "\n";
+    return wireIn1 + " " + wireIn2 + " " + wireOut +  " " + literalValue + "\n";
   } // toString method
   
 } // Gate class
